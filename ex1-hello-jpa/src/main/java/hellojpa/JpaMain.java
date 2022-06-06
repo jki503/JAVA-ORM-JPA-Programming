@@ -18,9 +18,26 @@ public class JpaMain {
         tx.begin();
 
         try{
-            System.out.println("===");
-            em.persist(new Member("cc"));
-            em.persist(new Member("dd"));
+            Team team = new Team("teamA");
+
+            Member member1 = new Member("jung");
+            Member member2 = new Member("kim");
+            member1.updateTeam(team);
+            member2.updateTeam(team);
+
+            em.persist(team);
+            em.persist(member1);
+            em.persist(member2);
+
+            em.flush();
+            em.clear();
+
+            //이제 양방향 확인해보기
+
+            Member findMember = em.find(Member.class, member1.getId());
+            findMember.getTeam().getMembers().forEach(member -> System.out.println(member.getName()));
+
+
             System.out.println("===");
 
             tx.commit();//4. 실제 쿼리 날아가는 시점

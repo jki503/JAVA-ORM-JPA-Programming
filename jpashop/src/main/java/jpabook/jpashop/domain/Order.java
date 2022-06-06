@@ -3,6 +3,7 @@ package jpabook.jpashop.domain;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
 @Table(name = "ORDERS")
@@ -13,7 +14,7 @@ public class Order {
     @Column(name = "ORDER_ID")
     private Long id;
 
-    private LocalDateTime date;
+    private LocalDateTime orderDate;
 
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
@@ -25,7 +26,7 @@ public class Order {
     protected Order(){}
 
     public Order(LocalDateTime date, OrderStatus status) {
-        this.date = date;
+        this.orderDate = date;
         this.status = status;
     }
 
@@ -33,12 +34,12 @@ public class Order {
         return id;
     }
 
-    public LocalDateTime getDate() {
-        return date;
+    public LocalDateTime getOrderDate() {
+        return orderDate;
     }
 
-    public void setDate(LocalDateTime date) {
-        this.date = date;
+    public void setOrderDate(LocalDateTime orderDate) {
+        this.orderDate = orderDate;
     }
 
     public OrderStatus getStatus() {
@@ -55,5 +56,14 @@ public class Order {
 
     public void setMember(Member member) {
         this.member = member;
+    }
+
+    public void updateMember(Member member) {
+        if(Objects.nonNull(this.member)){
+            member.getOrders().remove(this);
+        }
+
+        this.member = member;
+        member.getOrders().add(this);
     }
 }

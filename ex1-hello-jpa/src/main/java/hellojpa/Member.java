@@ -2,20 +2,23 @@ package hellojpa;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Objects;
 import java.util.StringJoiner;
 
 @Entity
-@SequenceGenerator(
-        name = "MEMBER_SEQ_GENERATOR",
-        sequenceName = "MEMBER_SEQ", //매핑할 데이터베이스 시퀀스 이름
-        initialValue = 1, allocationSize = 50)
 public class Member {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MEMBER_SEQ_GENERATOR")
+    @GeneratedValue
+    @Column(name = "MEMBER_ID")
     private Long id;
 
+    @Column(name = "USER_NAME")
     private String name;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "TEAM_ID", referencedColumnName = "TEAM_ID")
+    private Team team;
 
     protected Member(){}
 
@@ -27,16 +30,25 @@ public class Member {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public Team getTeam() {
+        return team;
+    }
+
+
+    public void updateName(String name) {
         this.name = name;
+    }
+
+    public void updateTeam(Team team) {
+        if(Objects.nonNull(this.team)){
+            this.team.getMembers().remove(this);
+        }
+        this.team = team;
+        team.getMembers().add(this);
     }
 
     @Override
