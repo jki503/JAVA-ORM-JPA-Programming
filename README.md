@@ -22,3 +22,7 @@
 ### [4. 엔티티 매핑](./doc/section04.md)
 
 ### [5. 연관 관계 매핑 기초](./doc/section05.md)
+
+### [6. 다양한 연관 관계 매핑](./doc/section06.md)
+
+### [7. 고급 매핑](./doc/section07.md)

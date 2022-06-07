@@ -18,27 +18,14 @@ public class JpaMain {
         tx.begin();
 
         try{
-            Team team = new Team("teamA");
+            Movie movie = new Movie("바람과함께사라지다", 10000, "감독","배우");
 
-            Member member1 = new Member("jung");
-            Member member2 = new Member("kim");
-            member1.updateTeam(team);
-            member2.updateTeam(team);
-
-            em.persist(team);
-            em.persist(member1);
-            em.persist(member2);
+            em.persist(movie);
 
             em.flush();
             em.clear();
 
-            //이제 양방향 확인해보기
-
-            Member findMember = em.find(Member.class, member1.getId());
-            findMember.getTeam().getMembers().forEach(member -> System.out.println(member.getName()));
-
-
-            System.out.println("===");
+            em.find(Item.class, movie.getId());
 
             tx.commit();//4. 실제 쿼리 날아가는 시점
         }catch (Exception e){

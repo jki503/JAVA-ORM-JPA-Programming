@@ -6,7 +6,7 @@ import java.util.Objects;
 import java.util.StringJoiner;
 
 @Entity
-public class Member {
+public class Member extends BaseEntity{
 
     @Id
     @GeneratedValue
@@ -16,9 +16,13 @@ public class Member {
     @Column(name = "USER_NAME")
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "TEAM_ID", referencedColumnName = "TEAM_ID")
+    @ManyToOne
+    @JoinColumn(name = "TEAM_ID", insertable = false, updatable = false)
     private Team team;
+
+    @OneToOne
+    @JoinColumn(name = "LOCKER_ID")
+    private Locker locker;
 
     protected Member(){}
 
@@ -34,21 +38,8 @@ public class Member {
         return name;
     }
 
-    public Team getTeam() {
-        return team;
-    }
-
-
-    public void updateName(String name) {
+    public void setName(String name) {
         this.name = name;
-    }
-
-    public void updateTeam(Team team) {
-        if(Objects.nonNull(this.team)){
-            this.team.getMembers().remove(this);
-        }
-        this.team = team;
-        team.getMembers().add(this);
     }
 
     @Override
