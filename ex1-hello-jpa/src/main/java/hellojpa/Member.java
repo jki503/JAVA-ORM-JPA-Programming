@@ -1,12 +1,10 @@
 package hellojpa;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.Objects;
-import java.util.StringJoiner;
+import java.util.*;
 
 @Entity
-public class Member extends BaseEntity{
+public class Member {
 
     @Id
     @GeneratedValue
@@ -16,18 +14,34 @@ public class Member extends BaseEntity{
     @Column(name = "USER_NAME")
     private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "TEAM_ID", insertable = false, updatable = false)
-    private Team team;
+    @Embedded
+    private Address address;
 
-    @OneToOne
-    @JoinColumn(name = "LOCKER_ID")
-    private Locker locker;
+    @ElementCollection
+    @Column(name = "FOOD_NAME")
+    @CollectionTable(name = "FAVORITE_FOOD", joinColumns =
+        @JoinColumn(name = "MEMBER_ID")
+    )
+    private Set<String> favoriteFoods = new HashSet<>();
 
-    protected Member(){}
+//    @ElementCollection
+//    @CollectionTable(name = "ADDRESS", joinColumns =
+//        @JoinColumn(name = "MEMBER_ID")
+//    )
+//    private List<Address> addressHistory = new ArrayList<>();
 
-    public Member(String name) {
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "MEMBER_ID")
+    private List<AddressEntity> addressHistory = new ArrayList<>();
+
+    protected Member() {
+    }
+
+    public Member(String name, Address address, Set<String> favoriteFoods, List<AddressEntity> addressHistory) {
         this.name = name;
+        this.address = address;
+        this.favoriteFoods = favoriteFoods;
+        this.addressHistory = addressHistory;
     }
 
     public Long getId() {

@@ -13,16 +13,24 @@
 
 ## [Table of Contents](#table-of-contents)
 
-### [1. JPA 소개](./doc/section01.md)
+### [01. JPA 소개](./doc/section01.md)
 
-### [2. JPA 시작하기](./doc/section02.md)
+### [02. JPA 시작하기](./doc/section02.md)
 
-### [3. 영속성 관리](./doc/section03.md)
+### [03. 영속성 관리](./doc/section03.md)
 
-### [4. 엔티티 매핑](./doc/section04.md)
+### [04. 엔티티 매핑](./doc/section04.md)
 
-### [5. 연관 관계 매핑 기초](./doc/section05.md)
+### [05. 연관 관계 매핑 기초](./doc/section05.md)
 
-### [6. 다양한 연관 관계 매핑](./doc/section06.md)
+### [06. 다양한 연관 관계 매핑](./doc/section06.md)
 
-### [7. 고급 매핑](./doc/section07.md)
+### [07. 고급 매핑](./doc/section07.md)
+
+### [08. 프록시와 연관관계 관리](./doc/section08.md)
+
+### [09. 값 타입](./doc/section09.md)
+
+### [10. 객체지향 쿼리 언어1 - 기본 문법](./doc/section10.md)
+
+### [11. 객체지향 쿼리 언어2 - 중급 문법](./doc/section11.md)
