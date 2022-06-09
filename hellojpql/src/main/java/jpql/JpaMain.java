@@ -38,16 +38,20 @@ public class JpaMain {
             em.persist(member3);
             em.persist(member4);
 
-            em.flush();
+            String queryString = "update Member m set m.age = m.age * 2 where m.age < 20";
+
+            //Flush만 된상 황이라 clear하고 사용해야해
+            int resultCount = em.createQuery(queryString)
+                            .executeUpdate();
+
             em.clear();
 
-            String jpql = "select distinct t from Team t join fetch t.members where t.name ='팀A'";
-            List<Team> resultList = em.createQuery(jpql, Team.class)
-                            .getResultList();
+            // 영속성 컨텍스트에 member1의 데이터가 남아있어서, 엔티티 동일성 보장해준다..
+            // clear 날려줘야해..
+            Member findMember = em.find(Member.class, member1.getId());
 
-            for (Team team : resultList){
-                System.out.println("teamName = " + team.getName() + "|" + team.getMembers().size());
-            }
+            System.out.println(member1 == findMember);
+            System.out.println(findMember.getAge());
 
             tx.commit();//4. 실제 쿼리 날아가는 시점
         } catch (Exception e) {
