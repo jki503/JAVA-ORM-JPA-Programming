@@ -1,6 +1,9 @@
 package hellojpa;
 
 import javax.persistence.*;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -19,29 +22,19 @@ public class JpaMain {
 
         try{
 
-            //1. collection 세팅
-            Set<String> favoriteFoods = new HashSet<>();
-            favoriteFoods.add("햄버거");
-            favoriteFoods.add("치킨");
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+            CriteriaQuery<Member> query = cb.createQuery(Member.class);
 
-            List<AddressEntity> addressHistory = new ArrayList<>();
-            addressHistory.add(new AddressEntity(new Address("city1", "street1", "zipcode1")));
-            addressHistory.add(new AddressEntity(new Address("city2", "street2", "zipcode2")));
+            Root<Member> m = query.from(Member.class);
 
-            // 2. member 생성
-            Member member = new Member(
-                    "hey",
-                    new Address("city","street", "zipcode"),
-                    favoriteFoods,
-                    addressHistory
-            );
+            CriteriaQuery<Member> cq = query.select(m).where(cb.equal(m.get("name"), "kim"));
+            List<Member> resultList = em.createQuery(cq)
+                    .getResultList();
 
-            // 3. 영속화
-            em.persist(member);
 
             tx.commit();//4. 실제 쿼리 날아가는 시점
         }catch (Exception e){
-            System.out.println("안되자나");
+            System.out.println(e.getMessage() + e);
             tx.rollback();
         }
 
